@@ -19,6 +19,7 @@ public class Person {
     private final Name name;
     private final Phone phone;
     private final Email email;
+    private final Remark remark;
 
     // Data fields
     private final Set<Tag> tags = new HashSet<>();
@@ -26,11 +27,12 @@ public class Person {
     /**
      * Every field must be present and not null.
      */
-    public Person(Name name, Phone phone, Email email, Set<Tag> tags) {
-        requireAllNonNull(name, phone, email, tags);
+    public Person(Name name, Phone phone, Email email, Remark remark, Set<Tag> tags) {
+        requireAllNonNull(name, phone, email, tags, remark);
         this.name = name;
         this.phone = phone;
         this.email = email;
+        this.remark = remark;
         this.tags.addAll(tags);
     }
 
@@ -54,6 +56,7 @@ public class Person {
         return Collections.unmodifiableSet(tags);
     }
 
+    public Remark getRemark() { return remark;}
     /**
      * Returns true if both persons of the same name have at least one other identity field that is the same.
      * This defines a weaker notion of equality between two persons.
@@ -103,6 +106,8 @@ public class Person {
                 .append(getPhone())
                 .append(" Email: ")
                 .append(getEmail())
+                .append(" Remark: ")
+                .append(getRemark())
                 .append(" Tags: ");
         getTags().forEach(builder::append);
         return builder.toString();
