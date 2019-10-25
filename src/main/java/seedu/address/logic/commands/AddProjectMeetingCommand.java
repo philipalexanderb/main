@@ -3,9 +3,16 @@ package seedu.address.logic.commands;
 import seedu.address.logic.commands.exceptions.CommandException;
 import seedu.address.model.Model;
 import seedu.address.model.project.Meeting;
+import seedu.address.model.project.Project;
+import seedu.address.model.project.Task;
+
+import java.util.HashSet;
+import java.util.List;
+import java.util.Set;
 
 import static java.util.Objects.requireNonNull;
 import static seedu.address.logic.parser.CliSyntax.*;
+import static seedu.address.model.Model.PREDICATE_SHOW_ALL_PROJECTS;
 
 public class AddProjectMeetingCommand extends Command {
     public static final String COMMAND_WORD = "addProjectMeeting";
@@ -34,7 +41,19 @@ public class AddProjectMeetingCommand extends Command {
     public CommandResult execute(Model model) throws CommandException {
         requireNonNull(model);
 
-        model.getWorkingProject().get().addNewMeeting(toAdd);
+        Project projectToEdit = model.getWorkingProject().get();
+        List<String> members = projectToEdit.getMembers();
+        Set<Task> taskList = projectToEdit.getTasks();
+        Set<Meeting> meetingList = projectToEdit.getListOfMeeting();
+        Set<Meeting> newMeetingList = new HashSet<>();
+        newMeetingList.addAll(meetingList);
+        newMeetingList.add(toAdd);
+        Project editedProject = new Project(projectToEdit.getTitle(), projectToEdit.getDescription(), taskList, projectToEdit.getFinance());
+        editedProject.getMembers().addAll(members);
+        editedProject.setListOfMeeting(newMeetingList);
+
+        model.setProject(projectToEdit, editedProject);
+        model.updateFilteredProjectList(PREDICATE_SHOW_ALL_PROJECTS);
         return new CommandResult(String.format(MESSAGE_SUCCESS, toAdd));
     }
 }

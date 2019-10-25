@@ -7,6 +7,7 @@ import seedu.address.model.project.Project;
 
 import static java.util.Objects.requireNonNull;
 import static seedu.address.logic.parser.CliSyntax.*;
+import static seedu.address.model.Model.PREDICATE_SHOW_ALL_PROJECTS;
 
 public class AddProjectCommand extends Command {
     public static final String COMMAND_WORD = "addProject";
@@ -39,6 +40,7 @@ public class AddProjectCommand extends Command {
         }
 
         model.addProject(toAdd);
+        model.updateFilteredProjectList(PREDICATE_SHOW_ALL_PROJECTS);
         return new CommandResult(String.format(MESSAGE_SUCCESS, toAdd));
     }
 }
