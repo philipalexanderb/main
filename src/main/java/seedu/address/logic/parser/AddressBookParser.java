@@ -46,6 +46,10 @@ public class AddressBookParser {
             return new AddCommandParser().parse(arguments);
         case AddMemberCommand.COMMAND_WORD:
             return new AddMemberCommandParser().parse(arguments);
+
+        case AddFromContactsCommand.COMMAND_WORD:
+            return new AddFromContactsCommandParser().parse(arguments);
+
         case AddBudgetCommand.COMMAND_WORD:
             return new AddBudgetCommandParser().parse(arguments);
 
@@ -89,7 +93,13 @@ public class AddressBookParser {
             return new CheckoutCommandParser().parse(arguments);
 
         case GenerateSlotCommand.COMMAND_WORD:
-            return new GenerateSlotParser().parse(arguments);
+            return new GenerateSlotCommandParser().parse(arguments);
+
+        case SendMailCommand.COMMAND_WORD:
+            return new SendMailCommandParser().parse(arguments);
+
+        case SignInCommand.COMMAND_WORD:
+            return new SignInCommandParser().parse(arguments);
 
         default:
             throw new ParseException(MESSAGE_UNKNOWN_COMMAND);

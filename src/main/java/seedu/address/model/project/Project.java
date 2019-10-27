@@ -1,15 +1,11 @@
 package seedu.address.model.project;
 
+import seedu.address.model.OwnerAccount;
+import seedu.address.model.finance.Finance;
+import seedu.address.model.person.Email;
 import seedu.address.model.person.Person;
 
-import java.util.ArrayList;
-import java.util.List;
-
-import java.util.Collections;
-import java.util.HashSet;
-import java.util.Set;
-import seedu.address.model.finance.Finance;
-
+import java.util.*;
 
 import static seedu.address.commons.util.CollectionUtil.requireAllNonNull;
 
@@ -28,10 +24,14 @@ public class Project {
     private final Set<Task> tasks = new HashSet<>();
     private Set<Meeting> meeting = new HashSet<>();
 
-    public Project(Title name, Description description, Set<Task> tasks, Finance finance) {
+    private OwnerAccount ownerAccount;
+    private boolean isSignedIn = false;
+
+    public Project(Title name, Description description, List<String> members, Set<Task> tasks, Finance finance) {
         requireAllNonNull(name, description);
         this.description = description;
         this.title = name;
+        this.members.addAll(members);
         this.tasks.addAll(tasks);
         this.finance = finance;
     }
@@ -91,6 +91,14 @@ public class Project {
         return members.contains(person.getName().fullName);
     }
 
+    public void signIn(OwnerAccount ownerAccount) {
+        this.ownerAccount = ownerAccount;
+        this.isSignedIn = true;
+    }
+
+    public boolean isSignedIn() {
+        return this.isSignedIn;
+    }
 
     @Override
     public String toString() {
