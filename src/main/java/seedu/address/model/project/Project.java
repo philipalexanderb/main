@@ -1,8 +1,6 @@
 package seedu.address.model.project;
 
-import seedu.address.model.OwnerAccount;
 import seedu.address.model.finance.Finance;
-import seedu.address.model.person.Email;
 import seedu.address.model.person.Person;
 
 import java.util.*;
@@ -23,9 +21,6 @@ public class Project {
     private final Finance finance;
     private final Set<Task> tasks = new HashSet<>();
     private Set<Meeting> meeting = new HashSet<>();
-
-    private OwnerAccount ownerAccount;
-    private boolean isSignedIn = false;
 
     public Project(Title name, Description description, List<String> members, Set<Task> tasks, Finance finance) {
         requireAllNonNull(name, description);
@@ -89,15 +84,6 @@ public class Project {
 
     public boolean hasMember(Person person) {
         return members.contains(person.getName().fullName);
-    }
-
-    public void signIn(OwnerAccount ownerAccount) {
-        this.ownerAccount = ownerAccount;
-        this.isSignedIn = true;
-    }
-
-    public boolean isSignedIn() {
-        return this.isSignedIn;
     }
 
     @Override

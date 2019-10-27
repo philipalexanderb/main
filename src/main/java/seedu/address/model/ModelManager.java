@@ -223,6 +223,19 @@ public class ModelManager implements Model {
         updateFilteredProjectList(PREDICATE_SHOW_ALL_PROJECTS);
     }
 
+    //=========== Email Account for Owner of application ======================================================
+
+    private OwnerAccount ownerAccount;
+    private boolean isSignedIn = false;
+
+    public void signIn(OwnerAccount ownerAccount) {
+        this.ownerAccount = ownerAccount;
+        this.isSignedIn = true;
+    }
+
+    public boolean isSignedIn() {
+        return this.isSignedIn;
+    }
 
     //=========== Filtered Project List Accessors =============================================================
 

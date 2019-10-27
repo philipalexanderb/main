@@ -1,19 +1,18 @@
 package seedu.address.logic.commands;
 
+import seedu.address.commons.core.LogsCenter;
 import seedu.address.logic.commands.exceptions.CommandException;
 import seedu.address.model.Model;
 import seedu.address.model.OwnerAccount;
-import seedu.address.model.project.Project;
 
-import java.util.Optional;
+import java.util.logging.Logger;
 
 import static java.util.Objects.requireNonNull;
 import static seedu.address.logic.parser.CliSyntax.PREFIX_ACCOUNT;
 import static seedu.address.logic.parser.CliSyntax.PREFIX_PASSWORD;
-import static seedu.address.model.Model.PREDICATE_SHOW_ALL_PROJECTS;
 
 public class SignInCommand extends Command {
-    OwnerAccount ownerAccount;
+    private OwnerAccount ownerAccount;
 
     public static final String COMMAND_WORD = "signIn";
 
@@ -34,17 +33,17 @@ public class SignInCommand extends Command {
         this.ownerAccount = ownerAccount;
     }
 
+    final Logger logger = LogsCenter.getLogger(SendMailCommand.class);
+
     @Override
     public CommandResult execute(Model model) throws CommandException {
         requireNonNull(model);
-        Optional<Project> project = model.getWorkingProject();
 
-        if (project.get().isSignedIn()) {
+        if (model.isSignedIn()) {
             throw new CommandException(MESSAGE_SIGNED_IN);
         }
 
-        project.get().signIn(ownerAccount);
-        model.updateFilteredProjectList(PREDICATE_SHOW_ALL_PROJECTS);
+        model.signIn(ownerAccount);
         return new CommandResult(String.format(MESSAGE_SUCCESS), COMMAND_WORD);
     }
 

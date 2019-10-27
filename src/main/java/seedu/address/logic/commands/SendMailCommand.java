@@ -1,6 +1,5 @@
 package seedu.address.logic.commands;
 
-import seedu.address.MainApp;
 import seedu.address.commons.core.LogsCenter;
 import seedu.address.commons.exceptions.IllegalValueException;
 import seedu.address.logic.commands.exceptions.CommandException;
@@ -22,7 +21,7 @@ import static seedu.address.logic.parser.CliSyntax.PREFIX_MESSAGE;
 
 import static java.util.Objects.requireNonNull;
 
-public class SendMailCommand extends Command{
+public class SendMailCommand extends Command {
 
     public static final String COMMAND_WORD = "sendMail";
 
@@ -37,10 +36,10 @@ public class SendMailCommand extends Command{
             + PREFIX_SUBJECT + "sending email"
             + PREFIX_MESSAGE + "Hello World!";
 
-    public OwnerAccount ownerAccount;
-    public String recipient;
-    public String subject;
-    public String message;
+    private OwnerAccount ownerAccount;
+    private String recipient;
+    private String subject;
+    private String message;
 
     public SendMailCommand(OwnerAccount ownerAccount, String recipient, String subject, String message) {
         this.ownerAccount = ownerAccount;
@@ -54,9 +53,9 @@ public class SendMailCommand extends Command{
         requireNonNull(model);
 
         //not required to checkout for sending email(?)
-//        if (!model.isCheckedOut()) {
-//            throw new CommandException(model.checkoutConstrain());
-//        }
+        //if (!model.isCheckedOut()) {
+        //    throw new CommandException(model.checkoutConstrain());
+        //  }
 
         Mailer.sendEmail(this.ownerAccount.getEmail().value, this.ownerAccount.getPassword(), this.recipient, this.subject, this.message);
 
@@ -64,8 +63,8 @@ public class SendMailCommand extends Command{
     }
 }
 
-class Mailer{
-    public static void sendEmail(String from,String password,String to,String sub,String msg){
+class Mailer {
+    public static void sendEmail(String from, String password, String to, String sub, String msg) {
 
         final Logger logger = LogsCenter.getLogger(SendMailCommand.class);
 
