@@ -1,7 +1,7 @@
 package seedu.address.logic.parser;
 
 import seedu.address.logic.parser.exceptions.ParseException;
-import seedu.address.model.LogOutCommand;
+import seedu.address.logic.commands.LogOutCommand;
 
 import java.util.stream.Stream;
 
