@@ -2,8 +2,6 @@ package seedu.address.logic.parser;
 
 import seedu.address.logic.commands.SendMailCommand;
 import seedu.address.logic.parser.exceptions.ParseException;
-import seedu.address.model.OwnerAccount;
-import seedu.address.model.person.Email;
 
 import java.util.stream.Stream;
 
@@ -19,21 +17,18 @@ public class SendMailCommandParser implements Parser<SendMailCommand> {
      */
     public SendMailCommand parse(String args) throws ParseException {
         ArgumentMultimap argMultimap =
-                ArgumentTokenizer.tokenize(args, PREFIX_ACCOUNT, PREFIX_PASSWORD, PREFIX_RECIPIENT, PREFIX_SUBJECT, PREFIX_MESSAGE);
+                ArgumentTokenizer.tokenize(args, PREFIX_RECIPIENT, PREFIX_SUBJECT, PREFIX_MESSAGE);
 
-        if (!arePrefixesPresent(argMultimap, PREFIX_ACCOUNT, PREFIX_PASSWORD, PREFIX_RECIPIENT, PREFIX_SUBJECT, PREFIX_MESSAGE)
+        if (!arePrefixesPresent(argMultimap, PREFIX_RECIPIENT, PREFIX_SUBJECT, PREFIX_MESSAGE)
                 || !argMultimap.getPreamble().isEmpty()) {
             throw new ParseException(String.format(MESSAGE_INVALID_COMMAND_FORMAT, SendMailCommand.MESSAGE_USAGE));
         }
 
-        String sender = argMultimap.getValue(PREFIX_ACCOUNT).get();
-        String password = argMultimap.getValue(PREFIX_PASSWORD).get();
         String recipient = argMultimap.getValue(PREFIX_RECIPIENT).get();
         String subject = argMultimap.getValue(PREFIX_SUBJECT).get();
         String message = argMultimap.getValue(PREFIX_MESSAGE).get();
 
-        OwnerAccount owneraccount = new OwnerAccount(new Email(sender), password);
-        return new SendMailCommand(owneraccount, recipient, subject, message);
+        return new SendMailCommand(recipient, subject, message);
     }
 
     /**

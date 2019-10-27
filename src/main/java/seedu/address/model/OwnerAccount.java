@@ -20,6 +20,10 @@ public class OwnerAccount {
         return this.password;
     }
 
+    public boolean equals(OwnerAccount ownerAccount) {
+        return this.email.equals(ownerAccount.getEmail());
+    }
+
     @Override
     public String toString() {
         final StringBuilder builder = new StringBuilder();

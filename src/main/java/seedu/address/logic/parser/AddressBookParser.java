@@ -2,6 +2,7 @@ package seedu.address.logic.parser;
 
 import seedu.address.logic.commands.*;
 import seedu.address.logic.parser.exceptions.ParseException;
+import seedu.address.model.LogOutCommand;
 
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
@@ -100,6 +101,9 @@ public class AddressBookParser {
 
         case SignInCommand.COMMAND_WORD:
             return new SignInCommandParser().parse(arguments);
+
+        case LogOutCommand.COMMAND_WORD:
+            return new LogOutCommandParser().parse(arguments);
 
         default:
             throw new ParseException(MESSAGE_UNKNOWN_COMMAND);

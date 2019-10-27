@@ -119,7 +119,17 @@ public interface Model {
     /**
      * Lets user signs in with the given Account.
      */
-    void signIn(OwnerAccount ownerAccount);
+    void signIn(OwnerAccount ownerAccount) throws Exception;
+
+    /**
+     * Returns user's Email Account
+     */
+    OwnerAccount getOwnerAccount();
+
+    /**
+     * Signs out of the Account
+     */
+    void logOut();
 
 
     //=========== Project list ================================================================================

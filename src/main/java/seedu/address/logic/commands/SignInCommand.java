@@ -20,12 +20,16 @@ public class SignInCommand extends Command {
 
     public static final String MESSAGE_SIGNED_IN = "You have signed in, please log out to sign in to another account";
 
-    public static final String MESSAGE_USAGE = COMMAND_WORD + ": Sign In to your Email Account. "
+    public static final String MESSAGE_SIGN_IN_ISSUE = "Unable to sign in. Please check that: \n"
+            + "  - You have correctly input the email address and password.\n"
+            + "  - You are connected to the Internet.";
+
+    public static final String MESSAGE_USAGE = COMMAND_WORD + ": Sign In to your Email Account. \n"
             + "Parameters: "
-            + PREFIX_ACCOUNT + "EMAIL ACCOUNT"
+            + PREFIX_ACCOUNT + "EMAIL_ACCOUNT "
             + PREFIX_PASSWORD + "PASSWORD \n"
             + "Example: " + COMMAND_WORD + " "
-            + PREFIX_ACCOUNT + "alice@gmail.com"
+            + PREFIX_ACCOUNT + "alice@gmail.com "
             + PREFIX_PASSWORD + "12345678";
 
     public SignInCommand(OwnerAccount ownerAccount) {
@@ -39,11 +43,18 @@ public class SignInCommand extends Command {
     public CommandResult execute(Model model) throws CommandException {
         requireNonNull(model);
 
-        if (model.isSignedIn()) {
+        if (model.isSignedIn() && this.ownerAccount.equals(model.getOwnerAccount())) {
+            throw new CommandException("You are signed in with the Account");
+        } else if (model.isSignedIn()) {
             throw new CommandException(MESSAGE_SIGNED_IN);
         }
 
-        model.signIn(ownerAccount);
+        //Can try to use other legit method, current method is to send dummy email to cs2103t17@gmail.com and see if email can be sent.
+        try {
+            model.signIn(ownerAccount);
+        } catch (Exception e) {
+            throw new CommandException(MESSAGE_SIGN_IN_ISSUE);
+        }
         return new CommandResult(String.format(MESSAGE_SUCCESS), COMMAND_WORD);
     }
 
