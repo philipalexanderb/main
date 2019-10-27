@@ -30,7 +30,7 @@ public class AddMemberCommand extends Command {
             + PREFIX_ADDRESS + "311, Clementi Ave 2, #02-25 "
             + PREFIX_TAG + "Co-Team Leader ";
 
-    public static final String MESSAGE_SUCCESS = "New member added to %2$s project and address book: %1$s";
+    public static final String MESSAGE_SUCCESS = "New member added to %2$s";
     public static final String MESSAGE_SUCCESS_MISSING_FIELDS = MESSAGE_SUCCESS + " (Please remember to fill in remaining information for member)";
     public static final String MESSAGE_DUPLICATE_PERSON = "This person already exists in the project";
     public static final String MESSAGE_WRONG_ADD_COMMAND = "This person already exists in the address book, "
@@ -56,7 +56,7 @@ public class AddMemberCommand extends Command {
 
         Person personToAdd = createNewMember(toAdd);
         personToAdd.getProjects().add(projectToEditTitle);
-        List<String> memberListToEdit = projectToEdit.getMembers();
+        List<String> memberListToEdit = projectToEdit.getMemberNames();
         List<String> editedMemberList = new ArrayList<>();
 
         if (model.hasPerson(personToAdd)) {

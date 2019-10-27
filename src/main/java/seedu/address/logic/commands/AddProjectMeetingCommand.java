@@ -44,14 +44,14 @@ public class AddProjectMeetingCommand extends Command {
         requireNonNull(model);
 
         Project projectToEdit = model.getWorkingProject().get();
-        List<String> members = projectToEdit.getMembers();
-        Set<Task> taskList = projectToEdit.getTasks();
+        List<String> members = projectToEdit.getMemberNames();
+        List<Task> taskList = projectToEdit.getTasks();
         Set<Meeting> meetingList = projectToEdit.getListOfMeeting();
         Set<Meeting> newMeetingList = new HashSet<>();
         newMeetingList.addAll(meetingList);
         newMeetingList.add(toAdd);
-        Project editedProject = new Project(projectToEdit.getTitle(), projectToEdit.getDescription(), projectToEdit.getMembers(), taskList, projectToEdit.getFinance());
-        editedProject.getMembers().addAll(members);
+        Project editedProject = new Project(projectToEdit.getTitle(), projectToEdit.getDescription(), members, taskList, projectToEdit.getFinance());
+        editedProject.getMemberNames().addAll(members);
         editedProject.setListOfMeeting(newMeetingList);
 
         model.setProject(projectToEdit, editedProject);

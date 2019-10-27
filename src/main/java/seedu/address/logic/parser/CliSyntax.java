@@ -20,4 +20,5 @@ public class CliSyntax {
     public static final Prefix PREFIX_ACCOUNT = new Prefix("ac/");
     public static final Prefix PREFIX_SUBJECT = new Prefix("su/");
     public static final Prefix PREFIX_MESSAGE = new Prefix("me/");
+    public static final Prefix PREFIX_DONE = new Prefix("d/");
 }
