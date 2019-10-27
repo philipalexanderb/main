@@ -41,6 +41,6 @@ public class AddProjectCommand extends Command {
 
         model.addProject(toAdd);
         model.updateFilteredProjectList(PREDICATE_SHOW_ALL_PROJECTS);
-        return new CommandResult(String.format(MESSAGE_SUCCESS, toAdd));
+        return new CommandResult(String.format(MESSAGE_SUCCESS, toAdd), COMMAND_WORD);
     }
 }

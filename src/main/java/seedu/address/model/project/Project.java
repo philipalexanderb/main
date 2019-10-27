@@ -1,15 +1,9 @@
 package seedu.address.model.project;
 
+import seedu.address.model.finance.Finance;
 import seedu.address.model.person.Person;
 
-import java.util.ArrayList;
-import java.util.List;
-
-import java.util.Collections;
-import java.util.HashSet;
-import java.util.Set;
-import seedu.address.model.finance.Finance;
-
+import java.util.*;
 
 import static seedu.address.commons.util.CollectionUtil.requireAllNonNull;
 
@@ -25,13 +19,14 @@ public class Project {
 
     private final List<String> members = new ArrayList<>();
     private final Finance finance;
-    private final Set<Task> tasks = new HashSet<>();
+    private final List<Task> tasks = new ArrayList<>();
     private Set<Meeting> meeting = new HashSet<>();
 
-    public Project(Title name, Description description, Set<Task> tasks, Finance finance) {
+    public Project(Title name, Description description, List<String> members, List<Task> tasks, Finance finance) {
         requireAllNonNull(name, description);
         this.description = description;
         this.title = name;
+        this.members.addAll(members);
         this.tasks.addAll(tasks);
         this.finance = finance;
     }
@@ -56,8 +51,8 @@ public class Project {
         this.meeting.add(meeting);
     }
 
-    public Set<Task> getTasks() {
-        return Collections.unmodifiableSet(tasks);
+    public List<Task> getTasks() {
+        return tasks;
     }
 
     public boolean hasTask(Task task) {
@@ -72,7 +67,7 @@ public class Project {
         return this.title.equals(project.getTitle().title);
     }
 
-    public List<String> getMembers() {
+    public List<String> getMemberNames() {
         return this.members;
     }
 
@@ -99,10 +94,11 @@ public class Project {
                 .append(" Project Title: ")
                 .append(getTitle())
                 .append(" Description: ")
-                .append(getDescription());
+                .append(getDescription())
+                .append(" Members: ");
 
         for (String a : members) {
-            builder.append(a + " ");
+            builder.append(a + ",");
         }
         return builder.toString();
     }

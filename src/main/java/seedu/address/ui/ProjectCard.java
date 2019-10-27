@@ -8,7 +8,9 @@ import javafx.scene.layout.HBox;
 import javafx.scene.layout.Region;
 import seedu.address.model.project.Meeting;
 import seedu.address.model.project.Project;
-import seedu.address.model.project.Task;
+import seedu.address.model.util.SortingOrder;
+
+
 
 import java.util.ArrayList;
 import java.util.Comparator;
@@ -49,22 +51,23 @@ public class ProjectCard extends UiPart<Region> {
     private FlowPane tasks;
     @FXML
     private FlowPane meetings;
+
     @FXML
     private Label meetingTitle;
+
+    private int count = 0;
 
     public ProjectCard(Project project, int displayedIndex) {
         super(FXML);
         this.project = project;
-        int count = 0;
         id.setText(displayedIndex + ". ");
         title.setText(project.getTitle().title);
         description.setText(project.getDescription().description);
         memberTitle.setText("Members:");
-        project.getMembers().forEach(member -> members.getChildren().add(new Label(member)));
-
-        for (Task task : project.getTasks()) {
-            tasks.getChildren().add(new Label("    " + ++count + ". " + task.toString()));
-        }
+        project.getMemberNames().forEach(member -> members.getChildren().add(new Label(member)));
+        project.getTasks().stream()
+                .sorted(SortingOrder.getCurrentSortingOrderForTask())
+                .forEach(task -> tasks.getChildren().add(new Label("    " + ++count + ". " + task.toString())));
         taskTitle.setText("Tasks: ");
         tasks.setOrientation(Orientation.VERTICAL);
         tasks.setPrefWrapLength(100);

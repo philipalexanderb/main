@@ -1,5 +1,13 @@
 package seedu.address.logic.parser;
 
+import static java.util.Objects.requireNonNull;
+import static seedu.address.commons.core.Messages.MESSAGE_INVALID_COMMAND_FORMAT;
+
+import java.time.DayOfWeek;
+import java.time.LocalTime;
+import java.time.format.DateTimeFormatter;
+import java.util.*;
+
 import seedu.address.commons.core.index.Index;
 import seedu.address.commons.exceptions.IllegalValueException;
 import seedu.address.commons.util.StringUtil;
@@ -16,14 +24,7 @@ import seedu.address.model.project.Title;
 import seedu.address.model.tag.Tag;
 import seedu.address.model.timetable.TimeRange;
 
-
-import java.time.DayOfWeek;
-import java.time.LocalTime;
-import java.time.format.DateTimeFormatter;
-import java.util.*;
-
-import static java.util.Objects.requireNonNull;
-import static seedu.address.commons.core.Messages.MESSAGE_INVALID_COMMAND_FORMAT;
+import seedu.address.model.timetable.TimeTable;
 
 import static seedu.address.model.finance.Spending.DATE_FORMAT;
 
@@ -188,16 +189,18 @@ public class ParserUtil {
 
     /**
      * Parses {@code String timeRange} into a {@code TimeRange}.
+     * Example: parseTimeRange(MONDAY TUESDAY 1100 1500)
+     * @param timeRange Format "DAYSTART TIMESTART DAYEND TIMEEND"
      */
     public static TimeRange parseTimeRange(String timeRange) throws ParseException {
         requireNonNull(timeRange);
         String[] split = timeRange.trim().split(" ");
-        DayOfWeek dayStart = DayOfWeek.valueOf(split[0]);
-        DayOfWeek dayEnd = DayOfWeek.valueOf(split[1]);
-        LocalTime startTime = LocalTime.parse(split[2], DateTimeFormatter.ofPattern("HHmm"));
-        LocalTime endTime = LocalTime.parse(split[3], DateTimeFormatter.ofPattern("HHmm"));
+        DayOfWeek dayStart = DayOfWeek.valueOf(split[0].trim());
+        LocalTime startTime = LocalTime.parse(split[1].trim(), DateTimeFormatter.ofPattern("HHmm"));
+        DayOfWeek dayEnd = DayOfWeek.valueOf(split[2].trim());
+        LocalTime endTime = LocalTime.parse(split[3].trim(), DateTimeFormatter.ofPattern("HHmm"));
         try {
-            return new TimeRange(dayStart, dayEnd, startTime, endTime);
+            return new TimeRange(dayStart, startTime, dayEnd, endTime);
         } catch (IllegalValueException e) {
             throw new ParseException(String.format(MESSAGE_INVALID_COMMAND_FORMAT, TimeRange.MESSAGE_CONSTRAINTS));
         }
@@ -235,6 +238,22 @@ public class ParserUtil {
             budgetSet.add(parseBudget(strs[i], strs[i + 1]));
         }
         return budgetSet;
+    }
+
+    /**
+     *
+     */
+    public static TimeTable parseTimeTable(String timeTableString) throws ParseException {
+        String[] splitted = timeTableString.split("\n");
+        List<TimeRange> timeRanges = new ArrayList<>();
+        for (String s : splitted) {
+            try {
+                timeRanges.add(parseTimeRange(s));
+            } catch (ParseException e) {
+                throw new ParseException(String.format(MESSAGE_INVALID_COMMAND_FORMAT, TimeRange.MESSAGE_CONSTRAINTS));
+            }
+        }
+        return new TimeTable(timeRanges);
     }
 
     /**
