@@ -27,6 +27,10 @@ public class SendMailCommand extends Command {
 
     public static final String MESSAGE_SUCCESS = "Mail has been sent successfully";
 
+    public static final String MESSAGE_FAILURE = "Failed to send email. Please ensure the following has been modified to your account security settings:\n"
+            + "  - Enable Less secure app access\n"
+            + "  - Disable the 2-Step Verification";
+
     public static final String MESSAGE_USAGE = COMMAND_WORD + ": Adds a meeting to the project. "
             + "Parameters: "
             + "Example: " + COMMAND_WORD + " "
@@ -57,14 +61,17 @@ public class SendMailCommand extends Command {
         //    throw new CommandException(model.checkoutConstrain());
         //  }
 
-        Mailer.sendEmail(this.ownerAccount.getEmail().value, this.ownerAccount.getPassword(), this.recipient, this.subject, this.message);
-
-        return new CommandResult(String.format(MESSAGE_SUCCESS), COMMAND_WORD);
+        try {
+            Mailer.sendEmail(this.ownerAccount.getEmail().value, this.ownerAccount.getPassword(), this.recipient, this.subject, this.message);
+            return new CommandResult(String.format(MESSAGE_SUCCESS), COMMAND_WORD);
+        } catch (Exception e) {
+            return new CommandResult(MESSAGE_FAILURE, COMMAND_WORD);
+        }
     }
 }
 
 class Mailer {
-    public static void sendEmail(String from, String password, String to, String sub, String msg) {
+    public static void sendEmail(String from, String password, String to, String sub, String msg) throws Exception {
 
         final Logger logger = LogsCenter.getLogger(SendMailCommand.class);
 
@@ -93,17 +100,13 @@ class Mailer {
                 });
 
         //compose message
-        try {
-            MimeMessage message = new MimeMessage(session);
-            message.setFrom(new InternetAddress(from));
-            message.setRecipient(Message.RecipientType.TO, new InternetAddress(to));
-            message.setSubject(sub);
-            message.setText(msg);
-            //send message
-            Transport.send(message); //throws an exception
-        } catch (Exception e) {
-            logger.info(e.getMessage());
-            throw new RuntimeException(e);
-        }
+        MimeMessage message = new MimeMessage(session);
+        message.setFrom(new InternetAddress(from));
+        message.setRecipient(Message.RecipientType.TO, new InternetAddress(to));
+        message.setSubject(sub);
+        message.setText(msg);
+        //send message
+        Transport.send(message); //throws an exception
     }
 }
+
