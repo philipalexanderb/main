@@ -243,7 +243,7 @@ public class ParserUtil {
     /**
      *
      */
-    public static TimeTable parseTimeTable(String timeTableString) throws IllegalValueException {
+    public static TimeTable parseTimeTable(String timeTableString) throws ParseException {
         String[] splitted = timeTableString.split("\n");
         List<TimeRange> timeRanges = new ArrayList<>();
         for (String s : splitted) {
