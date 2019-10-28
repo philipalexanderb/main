@@ -20,7 +20,9 @@ public class AddProjectMeetingCommand extends Command {
     public static final String MESSAGE_SUCCESS = "Meeting added: %1$s";
 
     public static final String MESSAGE_USAGE = COMMAND_WORD + ": Adds a meeting to the project. "
-            + "Parameters: "
+            + " Paremeters: "
+            + PREFIX_TIME + " TIME "
+            + PREFIX_DESCRIPTION + "DESCRIPTION \n"
             + "Example: " + COMMAND_WORD + " "
             + PREFIX_TIME + "29/09/2019 1900"
             + PREFIX_DESCRIPTION + "milestone discussion";

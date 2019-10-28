@@ -14,10 +14,10 @@ public class AddProjectCommand extends Command {
 
     public static final String MESSAGE_SUCCESS = "New project added: %1$s";
 
-    public static final String MESSAGE_USAGE = COMMAND_WORD + ": Adds a project to the project list. "
+    public static final String MESSAGE_USAGE = COMMAND_WORD + ": Adds a project to the project list. \n"
             + "Parameters: "
             + PREFIX_NAME + "NAME "
-            + PREFIX_DESCRIPTION + "PHONE "
+            + PREFIX_DESCRIPTION + "PHONE \n"
             + "Example: " + COMMAND_WORD + " "
             + PREFIX_NAME + "CS2103 TP "
             + PREFIX_DESCRIPTION + "To create an app to manage projects";
