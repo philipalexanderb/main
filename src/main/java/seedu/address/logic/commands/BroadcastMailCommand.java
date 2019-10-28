@@ -13,8 +13,6 @@ import static java.util.Objects.requireNonNull;
 import static seedu.address.logic.parser.CliSyntax.PREFIX_MESSAGE;
 import static seedu.address.logic.parser.CliSyntax.PREFIX_SUBJECT;
 
-import static java.util.Objects.requireNonNull;
-
 public class BroadcastMailCommand extends Command {
 
     public static final String COMMAND_WORD = "broadcastMail";
@@ -63,7 +61,7 @@ public class BroadcastMailCommand extends Command {
         }
 
         String unsentMails = "";
-        String MESSAGE_LIST_UNSENT_MAILS = "Mails could not be sent to the following members:\n";
+        String listOfUnsentMails = "Mails could not be sent to the following members:\n";
 
         for (Person person: recipientsList) {
             String recipientEmail = person.getEmail().value;
@@ -86,7 +84,7 @@ public class BroadcastMailCommand extends Command {
         if (unsentMails.equals("")) {
             return new CommandResult(String.format(MESSAGE_SUCCESS), COMMAND_WORD);
         } else {
-            return new CommandResult((MESSAGE_LIST_UNSENT_MAILS + unsentMails + "\n" + MESSAGE_FAILURE), COMMAND_WORD);
+            return new CommandResult((listOfUnsentMails + unsentMails + "\n" + MESSAGE_FAILURE), COMMAND_WORD);
         }
     }
 }
