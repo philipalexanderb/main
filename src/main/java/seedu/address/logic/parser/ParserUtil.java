@@ -3,9 +3,11 @@ package seedu.address.logic.parser;
 import static java.util.Objects.requireNonNull;
 import static seedu.address.commons.core.Messages.MESSAGE_INVALID_COMMAND_FORMAT;
 
+import java.math.BigDecimal;
 import java.time.DayOfWeek;
 import java.time.LocalTime;
 import java.time.format.DateTimeFormatter;
+import java.time.format.DateTimeParseException;
 import java.util.*;
 
 import seedu.address.commons.core.index.Index;
@@ -24,6 +26,9 @@ import seedu.address.model.project.Title;
 import seedu.address.model.tag.Tag;
 import seedu.address.model.timetable.TimeRange;
 
+import java.util.List;
+import java.util.Date;
+import java.util.ArrayList;
 import seedu.address.model.timetable.TimeTable;
 
 import static seedu.address.model.finance.Spending.DATE_FORMAT;
@@ -189,19 +194,19 @@ public class ParserUtil {
 
     /**
      * Parses {@code String timeRange} into a {@code TimeRange}.
-     * Example: parseTimeRange(MONDAY TUESDAY 1100 1500)
+     * Example: parseTimeRange(MONDAY 1100 TUESDAY 1500)
      * @param timeRange Format "DAYSTART TIMESTART DAYEND TIMEEND"
      */
     public static TimeRange parseTimeRange(String timeRange) throws ParseException {
         requireNonNull(timeRange);
         String[] split = timeRange.trim().split(" ");
-        DayOfWeek dayStart = DayOfWeek.valueOf(split[0].trim());
-        LocalTime startTime = LocalTime.parse(split[1].trim(), DateTimeFormatter.ofPattern("HHmm"));
-        DayOfWeek dayEnd = DayOfWeek.valueOf(split[2].trim());
-        LocalTime endTime = LocalTime.parse(split[3].trim(), DateTimeFormatter.ofPattern("HHmm"));
         try {
+            DayOfWeek dayStart = DayOfWeek.valueOf(split[0].trim().toUpperCase());
+            LocalTime startTime = LocalTime.parse(split[1].trim(), DateTimeFormatter.ofPattern("HHmm"));
+            DayOfWeek dayEnd = DayOfWeek.valueOf(split[2].trim().toUpperCase());
+            LocalTime endTime = LocalTime.parse(split[3].trim(), DateTimeFormatter.ofPattern("HHmm"));
             return new TimeRange(dayStart, startTime, dayEnd, endTime);
-        } catch (IllegalValueException e) {
+        } catch (IllegalValueException | ArrayIndexOutOfBoundsException | java.lang.IllegalArgumentException | DateTimeParseException e) {
             throw new ParseException(String.format(MESSAGE_INVALID_COMMAND_FORMAT, TimeRange.MESSAGE_CONSTRAINTS));
         }
     }
@@ -215,11 +220,11 @@ public class ParserUtil {
         requireNonNull(name, number);
         String trimmedName = name.trim();
         String trimmedNumber = number.trim();
-        Double doubleNumber;
+        BigDecimal doubleNumber;
         if (!Budget.isValidAmount(trimmedNumber)) {
             throw new ParseException(Budget.MESSAGE_CONSTRAINTS);
         }
-        doubleNumber = Double.valueOf(trimmedNumber);
+        doubleNumber = new BigDecimal(trimmedNumber);
         List<Spending> spendings = new ArrayList<>();
         return new Budget(trimmedName, doubleNumber, spendings);
     }
@@ -282,11 +287,11 @@ public class ParserUtil {
      *
      * @throws ParseException if the given {@code spending} is invalid.
      */
-    public static Double parseSpending(String spending) throws ParseException {
+    public static BigDecimal parseSpending(String spending) throws ParseException {
         String trimmedSpending = spending.trim();
         if (!Spending.isValidAmount(trimmedSpending)) {
             throw new ParseException(Spending.MESSAGE_CONSTRAINTS);
         }
-        return Double.valueOf(spending);
+        return new BigDecimal(spending);
     }
 }

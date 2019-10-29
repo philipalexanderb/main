@@ -13,6 +13,8 @@ import java.util.Set;
 import static java.util.Objects.requireNonNull;
 import static seedu.address.logic.parser.CliSyntax.*;
 import static seedu.address.model.Model.PREDICATE_SHOW_ALL_PROJECTS;
+import static seedu.address.commons.core.Messages.MESSAGE_NOT_CHECKED_OUT;
+
 
 public class AddProjectMeetingCommand extends Command {
     public static final String COMMAND_WORD = "addProjectMeeting";
@@ -42,6 +44,10 @@ public class AddProjectMeetingCommand extends Command {
     @Override
     public CommandResult execute(Model model) throws CommandException {
         requireNonNull(model);
+
+        if (!model.isCheckedOut()) {
+            throw new CommandException(MESSAGE_NOT_CHECKED_OUT);
+        }
 
         Project projectToEdit = model.getWorkingProject().get();
         List<String> members = projectToEdit.getMemberNames();

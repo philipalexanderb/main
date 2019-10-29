@@ -43,6 +43,9 @@ public class AddressBookParser {
         case AddProjectMeetingCommand.COMMAND_WORD:
             return new AddProjectMeetingCommandParser().parse(arguments);
 
+        case AddProfilePictureCommand.COMMAND_WORD:
+            return new AddProfilePictureCommandParser().parse(arguments);
+
         case AddCommand.COMMAND_WORD:
             return new AddCommandParser().parse(arguments);
 
@@ -102,6 +105,9 @@ public class AddressBookParser {
 
         case SendMailCommand.COMMAND_WORD:
             return new SendMailCommandParser().parse(arguments);
+
+        case BroadcastMailCommand.COMMAND_WORD:
+            return new BroadcastMailCommandParser().parse(arguments);
 
         case SignInCommand.COMMAND_WORD:
             return new SignInCommandParser().parse(arguments);
