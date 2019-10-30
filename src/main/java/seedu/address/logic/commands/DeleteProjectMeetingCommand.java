@@ -53,7 +53,7 @@ public class DeleteProjectMeetingCommand extends Command {
         }
 
         meetingsToEdit.sort(Comparator.comparing(m -> m.getTime().getDate()));
-        Meeting meetingToDelete = meetingsToEdit.remove(index.getOneBased()-1);
+        Meeting meetingToDelete = meetingsToEdit.remove(index.getOneBased() - 1);
         Set<Meeting> newMeeting = new HashSet<Meeting>(meetingsToEdit);
 
         Project editedProject = new Project(projectToEdit.getTitle(), projectToEdit.getDescription(),
