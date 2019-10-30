@@ -6,6 +6,7 @@ import seedu.address.commons.core.GuiSettings;
 import seedu.address.commons.core.LogsCenter;
 import seedu.address.model.person.Person;
 import seedu.address.model.project.Project;
+import seedu.address.model.util.SortingOrder;
 
 import java.nio.file.Path;
 import java.util.ArrayList;
@@ -44,7 +45,7 @@ public class ModelManager implements Model {
         this.addressBook = new AddressBook(addressBook);
         this.userPrefs = new UserPrefs(userPrefs);
         this.projectList = new ProjectList(projectList);
-        filteredPersons = new FilteredList<>(this.addressBook.getPersonList());
+        filteredPersons = new FilteredList<>(this.addressBook.getPersonList().sorted(SortingOrder.getCurrentSortingOrderForPerson()));
         filteredProjects = new FilteredList<>(this.projectList.getProjectList());
     }
 
@@ -57,13 +58,20 @@ public class ModelManager implements Model {
      * project.
      * @param project
      */
+    @Override
     public void setWorkingProject(Project project) {
         this.workingProject = Optional.of(project);
+    }
+
+    @Override
+    public void removeWorkingProject() {
+        this.workingProject = Optional.empty();
     }
 
     /**
      * @return An Optional object containing the working project.
      */
+    @Override
     public Optional<Project> getWorkingProject() {
         if (workingProject.isEmpty()) {
             return Optional.empty();
