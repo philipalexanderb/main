@@ -14,6 +14,7 @@ import java.util.*;
 
 import static java.util.Objects.requireNonNull;
 import static seedu.address.commons.core.Messages.MESSAGE_NOT_CHECKED_OUT;
+import static seedu.address.model.Model.PREDICATE_SHOW_ALL_PROJECTS;
 
 public class DeleteProjectMeetingCommand extends Command {
 
@@ -22,9 +23,7 @@ public class DeleteProjectMeetingCommand extends Command {
             + "by the index number used in the displayed project meetings list.\n"
             + "Parameters: INDEX (must be a positive integer)\n"
             + "Example: " + COMMAND_WORD + " 1 ";
-    public static final String MESSAGE_DELETE_MEETING_SUCCESS = "Meetings deleted :\n%1$s";
-
-    //public static final String MESSAGE_NOT_EDITED = "At least one field to edit must be provided.";
+    public static final String MESSAGE_DELETE_PROJECT_MEETING_SUCCESS = "Meetings deleted :\n%1$s";
 
     private final Index index;
 
@@ -54,10 +53,34 @@ public class DeleteProjectMeetingCommand extends Command {
         }
 
         meetingsToEdit.sort(Comparator.comparing(m -> m.getTime().getDate()));
-        Meeting meetingToDelete = meetingsToEdit.remove(index.getOneBased());
+        Meeting meetingToDelete = meetingsToEdit.remove(index.getOneBased()-1);
         Set<Meeting> newMeeting = new HashSet<Meeting>(meetingsToEdit);
 
+        Project editedProject = new Project(projectToEdit.getTitle(), projectToEdit.getDescription(),
+                members, tasks, finance);
+        editedProject.setListOfMeeting(newMeeting);
 
+        model.setProject(projectToEdit, editedProject);
+        model.setWorkingProject(editedProject);
+        model.updateFilteredProjectList(PREDICATE_SHOW_ALL_PROJECTS);
+        return new CommandResult(String.format(MESSAGE_DELETE_PROJECT_MEETING_SUCCESS, meetingToDelete), COMMAND_WORD);
 
+    }
+
+    @Override
+    public boolean equals(Object other) {
+        // short circuit if same object
+        if (other == this) {
+            return true;
+        }
+
+        // instanceof handles nulls
+        if (!(other instanceof DeleteProjectMeetingCommand)) {
+            return false;
+        }
+
+        // state check
+        DeleteProjectMeetingCommand e = (DeleteProjectMeetingCommand) other;
+        return index.equals(e.index);
     }
 }
