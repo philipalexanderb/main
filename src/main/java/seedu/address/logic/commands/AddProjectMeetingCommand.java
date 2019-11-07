@@ -22,8 +22,8 @@ public class AddProjectMeetingCommand extends Command {
     public static final String MESSAGE_SUCCESS = "Meeting added: %1$s";
 
     public static final String MESSAGE_USAGE = COMMAND_WORD + ": Adds a meeting to the project. "
-            + " Paremeters: "
-            + PREFIX_TIME + " TIME "
+            + " Parameters: "
+            + PREFIX_TIME + "DD/MM/YYYY HHMM "
             + PREFIX_DESCRIPTION + "DESCRIPTION \n"
             + "Example: " + COMMAND_WORD + " "
             + PREFIX_TIME + "29/09/2019 1900 "
@@ -56,7 +56,7 @@ public class AddProjectMeetingCommand extends Command {
         Set<Meeting> newMeetingList = new HashSet<>();
         newMeetingList.addAll(meetingList);
         newMeetingList.add(toAdd);
-        Project editedProject = new Project(projectToEdit.getTitle(), projectToEdit.getDescription(), members, taskList, projectToEdit.getFinance());
+        Project editedProject = new Project(projectToEdit.getTitle(), projectToEdit.getDescription(), members, taskList, projectToEdit.getFinance(), projectToEdit.getGeneratedTimetable());
         editedProject.setListOfMeeting(newMeetingList);
 
         model.setProject(projectToEdit, editedProject);

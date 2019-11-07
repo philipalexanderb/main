@@ -1,35 +1,39 @@
 package seedu.address.model.timetable;
 
-import com.google.common.collect.Sets;
 import seedu.address.commons.exceptions.IllegalValueException;
 
 import java.time.DayOfWeek;
 import java.time.LocalTime;
 import java.util.*;
 
+import static seedu.address.commons.util.CollectionUtil.requireAllNonNull;
+
 public class TimeSlotGenerator {
-    private Collection<TimeTable> timeTables;
+    private Collection<Timetable> timetables;
     private int numberOfHours;
     private TimeRange userSpecifiedTimeRange;
 
     /**
      * Timeslot generator
-     * @param timeTables List of timetables of all members.
+     * @param timetables List of timetables of all members.
      * @param numberOfHours Must be <= 23 hour
      * @param userSpecifiedTimeRange TimeRange to generate timeslot within.
      */
-    public TimeSlotGenerator(Collection<TimeTable> timeTables, int numberOfHours, TimeRange userSpecifiedTimeRange) {
-        this.timeTables = timeTables;
+    public TimeSlotGenerator(Collection<Timetable> timetables, int numberOfHours, TimeRange userSpecifiedTimeRange) {
+        requireAllNonNull(timetables, userSpecifiedTimeRange);
+        assert numberOfHours > 0;
+        this.timetables = timetables;
         this.numberOfHours = numberOfHours;
         this.userSpecifiedTimeRange = userSpecifiedTimeRange;
     }
 
     /**
+     * Return a list of TimeRange which do not overlap with any timetable, are more than the minimum number of hours and within the userSpecifiedTimeRange.
      * @return List of TimeRange where meeting is possible.
      * @throws IllegalValueException When unable to generate timeslot.
      */
     public List<TimeRange> generate() throws IllegalValueException {
-        List<TimeRange> combined = combineTimetables(timeTables);
+        List<TimeRange> combined = combineTimetables(timetables);
         List<TimeRange> merged = mergedOverlappingTimeRanges(combined);
         List<TimeRange> inverted = getFreeTimeRanges(merged);
         List<TimeRange> truncated = truncateTimeRanges(inverted, userSpecifiedTimeRange);
@@ -40,22 +44,27 @@ public class TimeSlotGenerator {
     }
 
     public TimeSlotsAvailable generateWithMostPeople() throws IllegalValueException {
-        Set<TimeTable> set = new HashSet<>(timeTables);
-        Set<Set<TimeTable>> powerSet = Sets.powerSet(set);
-        List<Set<TimeTable>> powerList = new ArrayList<>(powerSet);
+        Set<Timetable> set = new HashSet<>(timetables);
+        Set<Set<Timetable>> powerSet = powerSet(set);
+        List<Set<Timetable>> powerList = new ArrayList<>(powerSet);
         powerList.sort((x, y) -> y.size() - x.size()); // Descending order of size
-        for (Set<TimeTable> possibleTimeTables : powerList) {
-            List<TimeRange> timeRanges = new TimeSlotGenerator(possibleTimeTables, numberOfHours, userSpecifiedTimeRange).generate();
-            if (!timeRanges.isEmpty()) {
-                return new TimeSlotsAvailable(possibleTimeTables, timeRanges);
+        for (Set<Timetable> possibleTimetables : powerList) {
+            List<TimeRange> timeRanges = new TimeSlotGenerator(possibleTimetables, numberOfHours, userSpecifiedTimeRange).generate();
+            if (!timeRanges.isEmpty() && possibleTimetables.size() > 0) {
+                return new TimeSlotsAvailable(possibleTimetables, timeRanges);
             }
         }
         return new TimeSlotsAvailable(true);
     }
 
-    private static List<TimeRange> combineTimetables(Collection<TimeTable> timeTables) {
+    /**
+     * Convert {@code Collection<Timetable>} to {@code List<TimeRange>}
+     * @param timetables Input timetables
+     * @return List of TimeRange obtained by converting timetable into timerange.
+     */
+    private static List<TimeRange> combineTimetables(Collection<Timetable> timetables) {
         Set<TimeRange> timeRanges = new HashSet<>();
-        for (TimeTable timeTable : timeTables) {
+        for (Timetable timeTable : timetables) {
             timeRanges.addAll(timeTable.getTimeRanges());
         }
         return new ArrayList<>(timeRanges);
@@ -87,6 +96,26 @@ public class TimeSlotGenerator {
         return merged;
     }
 
+    // @@author Andrew Mao
+    // Reused from https://stackoverflow.com/a/14818944
+    private static <T> Set<Set<T>> powerSet(Set<T> originalSet) {
+        List<T> list = new ArrayList<T>(originalSet);
+        int n = list.size();
+
+        Set<Set<T>> powerSet = new HashSet<Set<T>>();
+
+        for (long i = 0; i < (1 << n); i++) {
+            Set<T> element = new HashSet<T>();
+            for (int j = 0; j < n; j++) {
+                if ((i >> j) % 2 == 1) {
+                    element.add(list.get(j));
+                }
+            }
+            powerSet.add(element);
+        }
+        return powerSet;
+    }
+
     /**
      * Merge 2 TimeRange together, assuming that they overlap.
      * @param r1 TimeRange 1.
@@ -113,6 +142,13 @@ public class TimeSlotGenerator {
         return inverted;
     }
 
+    /**
+     * Fit all TimeRange within limit specified
+     * @param timeRanges Input TimeRanges
+     * @param limit Clamp input TimeRanges within limit.
+     * @return Transformed TimeRanges
+     * @throws IllegalValueException
+     */
     private static List<TimeRange> truncateTimeRanges(List<TimeRange> timeRanges, TimeRange limit) throws IllegalValueException {
         List<TimeRange> truncated = new ArrayList<>();
         for (TimeRange timeRange : timeRanges) {
@@ -126,6 +162,12 @@ public class TimeSlotGenerator {
         return truncated;
     }
 
+    /**
+     * Eliminate timeRanges shorter than specified duration
+     * @param timeRanges Input
+     * @param numberOfHours Duration in hours
+     * @return Filtered result
+     */
     private static List<TimeRange> filterSuitableTimeRanges(List<TimeRange> timeRanges, int numberOfHours) {
         List<TimeRange> possibleRanges = new ArrayList<>();
         for (TimeRange timeRange : timeRanges) {
