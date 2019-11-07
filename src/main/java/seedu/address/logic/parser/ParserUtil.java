@@ -85,12 +85,16 @@ public class ParserUtil {
 
     public static Time parseTime(String time) throws ParseException {
         requireNonNull(time);
-        String trimmedTime = time.trim();
+        String trimmedTime = time.trim().split(" ")[1];
+        String trimmedDate = time.trim().split(" ")[0];
+        if (!Time.isValidDate(trimmedDate)) {
+            throw new ParseException(Time.DATE_CONSTRAINTS);
+        }
         if (!Time.isValidTime(trimmedTime)) {
-            throw new ParseException(Time.MESSAGE_CONSTRAINTS);
+            throw new ParseException(Time.TIME_CONSTRAINTS);
         }
         try {
-            return new Time(trimmedTime);
+            return new Time(time.trim());
         } catch (Exception e) {
             throw new ParseException(Time.MESSAGE_CONSTRAINTS);
         }
