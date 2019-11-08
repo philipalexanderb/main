@@ -20,6 +20,8 @@ Team: *T17-1*
 
 *Content*
 
+:imagesDir: images
+
 == Introduction:
 
 MyProject (MP) is for team leaders who prefer to use a desktop app for managing their projects.
@@ -39,6 +41,9 @@ Interested? Jump to the Section 2, “QuickStart” to get started. Enjoy!
 .. list : lists all contacts
 .. exit : exits the app
 . Refer to Section 3, “Features” for details of each command.
+
+.The home page of MyProject listing all the projcts you have
+image::home-page.png[]
 
 == Features
 
@@ -64,6 +69,9 @@ Example:
 
 * `checkout 1`
 
+.After you have checked out to a project, an overview of the project will be shown.
+image::checkout-command.png[]
+=======
 ==== Return to previous: `back`
 
 If you want to return to the previous view page of the app, simply type the command `back`.
@@ -173,8 +181,22 @@ MONDAY 1400 MONDAY 1600 +
 TUESDAY 1100 TUESDAY 1500
 
 * `addTimetable 2 n/https://nusmods.com/timetable/sem-1/share?CS2100=LAB:05,TUT:02,LEC:1&CS2101=&CS2103T=LEC:G13&CS2105=TUT:03,LEC:1&CS3241=TUT:05,LEC:1&CS3243=TUT:01,LEC:1&GEQ1000=TUT:D27` +
-Add timetable to the person with index 2 on the list of persons.
+Add timetable to the person with index 2 on the list of persons, by retrieving timetable data from NUSMods.
 
+Below is a step-by-step instruction to guide you through the process of adding a timetable to Alice, through the use of NUSMods:
+
+* Step 1: Type `addTimetable`, followed by the index of the person you wish to add the timetable to, and the URL of the share link.
+
+image:add-timetable/add-timetable-step-1.png[]
+
+* Step 2: Press enter, and you would see the following message. You can even scroll down to view a simple visualization of the timetable added!
+
+image:add-timetable/add-timetable-step-2.png[]
+
+[TIP]
+Even if you accidentally entered a wrong URL, MyProject would prompt you helpfully!
+
+image:add-timetable/add-timetable-step-3.png[]
 
 ==== Add a task: `addTask` [Checkout]
 
@@ -356,14 +378,14 @@ associated with this functionality.
 ==== Generate meeting timing: `generate` [Checkout]
 
 =======
-Generates possible meeting timeslots for which everyone is available.
+Generates possible meeting timeslots where all member are available.
 =======
 Need to decide on a meeting timing, but having trouble finding a time where all members are free? This command can help suggest meeting timings!
 
 * Prerequisite: Timetables have been assigned to the members with the command `addTimetable`
 
 [NOTE]
-`generate` would still work even if some members do not have timetable assigned to them. Make sure that you have done `addTimetable` for each of the members  in the project.
+`generate` would not give an error if some members do not have timetable assigned to them. Ensure that you have done `addTimetable` for each of the members in the project before using `generate`.
 
 Format: `generate d/DURATION [r/TIMERANGE]`
 
@@ -372,6 +394,24 @@ Example:
 * `generate d/2 r/MONDAY 0900 MONDAY 1800` +
 Generates all possible meeting timeslots that lasts at least 2 hours, within the time frame of Monday 9am to Monday 6pm.
 
+Below is a step-by-step instruction to guide you through generating a meeting timeslot that lasts for 2 hours, between Monday 1000 to Monday 1800:
+
+* Step 1: To generate a meeting timing for a project, you first need to `checkout` that project.
+
+image:generate/generate-step-1.png[]
+
+* Step 2: Enter the command with your desired duration of the meeting, and the time range to generate within
+
+image:generate/generate-step-2.png[]
+
+* Step 3: Press enter, and you will see the following result:
+
+image:generate/generate-step-3.png[]
+
+[NOTE]
+If MyProject is unable to find a timeslot where all members are free, it would try to find another timeslot where most members are free
+
+image:generate/generate-alt.png[]
 
 === Email
 Tired of switching between applications? We got you covered, below you will find some commands which support sending
@@ -386,6 +426,9 @@ Format: `signIn ac/ACCOUNT_EMAIL_ADDRESS pa/PASSWORD`
 Example:
 
 * `signIn ac/example@gmail.com pa/12345678`
+
+[NOTE]
+This command is required to be executed before the remainder of the email commands can be executed.
 
 ==== Log out from your account: `logOut`
 Logs out from your email account. +
@@ -413,7 +456,7 @@ Example:
 
 ==== Send reminder: `sendReminder`
 
-Sends a reminder to all members of the upcoming Meeting and Task that is due from the current working project. +
+Sends a reminder to all members from the current working project of the upcoming Meeting and Task that is due. +
 Format: `sendReminder`d/DURATION
 
 `DURATION` is the number of days from the current time within which the Tasks are due and The Meetings are held.
@@ -473,3 +516,6 @@ Format: `addExpense [INDEX_OF_BUDGET] [s/DESCRIPTION] [ex/AMOUNT SPEND] [c/dd/MM
 ==== View budgets
 See the summary of all budget which shows how much money is left with that budget and where is this budget used. +
 Format: `listBudget`
+
+.Present budget in a pie chart depicting all expenses under the budget and the remaining amount.
+image::listbudget-command.png[]
