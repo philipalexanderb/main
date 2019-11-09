@@ -9,10 +9,13 @@ import seedu.address.model.finance.Budget;
 import seedu.address.model.finance.Finance;
 import seedu.address.model.finance.Spending;
 import seedu.address.model.project.Project;
+import seedu.address.model.util.SortingOrder;
+
 import static seedu.address.commons.core.Messages.MESSAGE_NOT_CHECKED_OUT;
 import static seedu.address.model.Model.PREDICATE_SHOW_ALL_PROJECTS;
 
 
+import java.util.Collections;
 import java.util.List;
 
 import static java.util.Objects.requireNonNull;
@@ -53,11 +56,12 @@ public class AddSpendingCommand extends Command {
         Project currWorkingProject = model.getWorkingProject().get();
         List<Budget> budgets = currWorkingProject.getFinance().getBudgets();
 
-        if (index.getZeroBased() >= budgets.size()) {
+        if (index.getZeroBased() >= budgets.size() || index.getZeroBased() < 0) {
             throw new CommandException(Messages.MESSAGE_INVALID_BUDGET_DISPLAYED_INDEX);
         }
 
         budgets.get(index.getZeroBased()).addSpending(toAdd);
+        Collections.sort(budgets.get(index.getZeroBased()).getSpendings(), SortingOrder.getCurrentSortingOrderForSpending());
         Project editedProject = new Project(currWorkingProject.getTitle(),
                 currWorkingProject.getDescription(), currWorkingProject.getMemberNames(), currWorkingProject.getTasks(),
                 new Finance(budgets), currWorkingProject.getGeneratedTimetable());
