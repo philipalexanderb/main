@@ -453,8 +453,7 @@ public class AddProjectMeetingCommandTest {
 
         @Override
         public List<Meeting> getListOfMeeting() {
-            List<Meeting> meetingSet = new ArrayList<>();
-            return meetingSet;
+            return this.meetingList;
         }
 
         @Override
