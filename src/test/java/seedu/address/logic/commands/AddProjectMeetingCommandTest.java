@@ -36,9 +36,9 @@ public class AddProjectMeetingCommandTest {
     public void execute_duplicateMeeting_throwsCommandException() throws ParseException {
         Meeting validMeeting = new MeetingBuilder().build();
         AddProjectMeetingCommand addProjectMeetingCommand = new AddProjectMeetingCommand(validMeeting);
-        Model modelStub = new ModelStubWithOneProjectStubWithOneMeeting(validMeeting);
+        ModelStub modelStub = new ModelStubWithOneProjectStubWithOneMeeting(validMeeting);
 
-        assertThrows(CommandException.class, AddCommand.MESSAGE_DUPLICATE_PERSON, () -> addProjectMeetingCommand.execute(modelStub));
+        assertThrows(CommandException.class, AddProjectMeetingCommand.MESSAGE_DUPLICATE_MEETING, () -> addProjectMeetingCommand.execute(modelStub));
     }
 
     @Test
@@ -373,6 +373,9 @@ public class AddProjectMeetingCommandTest {
 
         ModelStubWithOneProjectStubWithOneMeeting(Meeting meeting) throws ParseException {
             this.meeting = meeting;
+            List<Meeting> meetingList = new ArrayList<>();
+            meetingList.add(meeting);
+            projectStubWithOneMeeting.setListOfMeeting(meetingList);
         }
 
         @Override
