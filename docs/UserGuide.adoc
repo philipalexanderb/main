@@ -223,6 +223,9 @@ Whenever you add a time with the prefix c/, the format should be dd/MM/yyyy HHmm
 Adds a new project meeting to the current working project.  +
 Format: `Format: addProjectMeeting [c/ dd/MM/yyyy HHmm] [s/MEETING_DESCRIPTION]`
 
+`dd/MM/yyyy HHmm` refers to the date and time the meeting is to be held.
+`MEETING_DESCRIPTION` refers to the purpose of the meeting.
+
 Example:
 
 * `addProjectMeeting c/29/09/2019 1900 s/milestone discussion`
@@ -440,6 +443,9 @@ Do keep in mind that only the user Account in our current version is only compat
 Signs in to the your email account. +
 Format: `signIn ac/ACCOUNT_EMAIL_ADDRESS pa/PASSWORD`
 
+`ACCOUNT_EMAIL_ADDRESS` refers to the sender's/user's email address.
+`PASSWORD` refers to the password to the sender's/user's email address.
+
 Example:
 
 * `signIn ac/example@gmail.com pa/12345678`
@@ -458,7 +464,11 @@ Example:
 
 ==== Send an email: `sendMail`
 Sends an email to the specified person in your contacts. +
-Format: `sendMail r/RECIPIENT_OF_EMAIL su/SUBJECT me/MESSAGE_BODY`
+Format: `sendMail r/RECIPIENT_EMAIL su/SUBJECT me/MESSAGE_BODY`
+
+`RECIPIENT_EMAIL` refers to the email address of the recipients. +
+`SUBJECT` refers to the email header. +
+`MESSAGE_BODY` refers to the email body.
 
 Example:
 
@@ -471,6 +481,9 @@ We will not check the correctness of the member's email address
 
 Sends an email to all members in the current working project. +
 Format: `broadcastMail su/SUBJECT me/MESSAGE_BODY`
+
+`SUBJECT` refers to the email header. +
+`MESSAGE_BODY` refers to the email body.
 
 Example:
 
