@@ -1,4 +1,4 @@
-:imagesDir: images
+:imagesDir: ../images
 
 = Philip Alexander Boediman - Project Portfolio for MyProject
 
@@ -114,6 +114,7 @@ include::../UserGuide.adoc[tag=email]
 |===
 |_Below is the section of developer guide that I contributed for my features._
 |===
-include::../DeveloperGuide.adoc[tag=sendReminder]
 include::../DeveloperGuide.adoc[tag=addProjectMeeting]
+include::../DeveloperGuide.adoc[tag=broadcastMail]
+include::../DeveloperGuide.adoc[tag=sendReminder]
 include::../DeveloperGuide.adoc[tag=signIn]
