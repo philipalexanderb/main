@@ -12,7 +12,7 @@ ifdef::env-github[]
 :note-caption: :information_source:
 :warning-caption: :warning:
 endif::[]
-:repoURL: https://github.com/se-edu/addressbook-level3/tree/master
+:repoURL: https://github.com/AY1920S1-CS2103T-T17-1/main/tree/master
 
 By: `T17-1`      Since: `Oct 2019`      Licence: `MIT`
 
@@ -1143,15 +1143,13 @@ These instructions only provide a starting point for testers to work on; testers
 
 .. Download the jar file and copy into an empty folder
 .. Double-click the jar file +
-   Expected: Shows the GUI with a set of sample contacts. The window size may not be optimum.
+   Expected: Shows the GUI with a set of sample projects. The window size may not be optimum.
 
 . Saving window preferences
 
 .. Resize the window to an optimum size. Move the window to a different location. Close the window.
 .. Re-launch the app by double-clicking the jar file. +
    Expected: The most recent window size and location is retained.
-
-_{ more test cases ... }_
 
 === Deleting a person
 
@@ -1165,8 +1163,6 @@ _{ more test cases ... }_
 .. Other incorrect delete commands to try: `delete`, `delete x` (where x is larger than the list size) _{give more}_ +
    Expected: Similar to previous.
 
-_{ more test cases ... }_
-
 === Sending Reminders
 
 .. Prerequisites: Checkout to a project using the checkout command. Sign in using the Gmail Account using the signIn command.
@@ -1175,10 +1171,10 @@ Expected output: no reminders are sent as the duration is 0, no meetings or task
 .. Command input: sendReminder d/-1 +
 Expected output: no reminders are sent as the duration cannot be a negative number.
 
-Other incorrect sendReminder commands to try: sendReminder d/hello (where duration is an alphabet), sendReminder d/0.9 (
+.. Other incorrect sendReminder commands to try: sendReminder d/hello (where duration is an alphabet), sendReminder d/0.9 (
 duration can only take numeric character whereas 0.9 contains "."), sendReminder d/ (duration cannot be empty)
 
-== Broadcasting Email
+=== Broadcasting Email
 
 .. Prerequisites: Checkout to a project using the checkout command. Sign in using the Gmail Account using the signIn command.
 .. Command input: broadcastMail su/ me/ +
@@ -1186,9 +1182,9 @@ Expected output: An email with empty Header and empty Message body will be sent 
 .. Command input: broadcastMail su/0.%$&89 me/lkjhsd +
 Expected output: An email with header "0.%$&89" and message body "lkjhsd" will be sent to all members in the project.
 
-There is no incorrect broadcastMail commands as the header and the message body can be anything that the user likes.
+.. There is no incorrect broadcastMail commands as the header and the message body can be anything that the user likes.
 
-== Signing In
+=== Signing In
 
 .. Prerequisites: Enable access to less secure app in the Google Account security settings. Disable the two-step verification method in the
 Google Account security settings. Use google account email address.
@@ -1198,11 +1194,30 @@ Expected output: failed to sign in as the input would expect a gmail domain to b
 Expected output: failed to sign in as the email address keyed in is not in the correct email format.
 .. Command input signIn ac/ pa/
 Expected output: failed to sign in as an empty email address is not a valid format for an email address.
-
-Other incorrect commands for signIn: signIn ac/cs2103t17@gmail.com pa/ (failed to sign in as the
+.. Other incorrect commands for signIn: signIn ac/cs2103t17@gmail.com pa/ (failed to sign in as the
 password for the email address is wrong) signIn ac/111111 pa/111111 (failed to sign in
 due to invalid format for email address)
 
+=== Editing a task
+  
+  .. Prerequisities: Checkout to a project using the `checkout` command. Multiple tasks in the task list.
+  .. Test case: `editTask 1 d/` +
+     Expected: First task is marked as done(cross changes to a tick).
+  .. Test case: `editTask 2 s/Do parts of the parser` +
+     Expected: The description of the second task is edited. Since d/ is not included in the input, the task is unchecked.
+  .. Test case `editTask 3 d/` +
+     Expected: No task is edited. Error details shown in the status message.
+  .. Other incorrect editTask commands to try: `editTask x` (where x is negative or larger than the list size), `editTask c/1/1/2019 1500` (Wrong time format)
+
+=== Sorting a task
+.. Prerequisites: Checkout to a project using the `checkout` command. Multiple tasks in the task list sorted according to the default order of increasing time(index 2).
+.. Test case: `sortTask 4` +
+  Expected: Tasks will automatically be sorted by which tasks are done/not done and then by increasing order of time.
+.. Test: `sortTask 1`
+  Expected: Tasks will automatically be sorted by alphabetical.
+.. Test: `addTask c/05/05/2019 1200 s/Allocate roles
+  Expected: Task will be added to the first index as the list is sorted by alphabetical order and 'Allocate roles' has the highest priority.
+.. Incorrect sortTask commands to try: `sortTask x`(where x is not within the range mentioned which is between integers 1-4)
 
 === Saving data
 
