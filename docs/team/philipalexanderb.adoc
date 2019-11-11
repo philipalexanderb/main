@@ -225,7 +225,9 @@ A typical meeting will look like this on the app:
 
 image::ProjectMeeting.png[]
 
+
 === Sending Reminder feature
+
 ==== Description of feature
 
 Sends reminder for tasks and meetings that are due in the number of days given by the user input.
@@ -264,7 +266,6 @@ The diagram above shows how `sendReminder` works. There are 2 possible error mes
 if the user inputs nothing as the duration and input cannot be empty error message is shown. Secondly,
 an error will be shown if the user non-numeric or negative or zero number as the duration of time. For a valid input,
 user will be required to checkout then signIn first before executing the command.
-
 
 ==== Design considerations
 
@@ -307,6 +308,7 @@ These are the stages shown in figure 4.
 . Creates OwnerAccount with the address and password.
 . Goes to `Model` to store the Email address and Password as `OwnerAccount`.
 . Display the success message.
+
 
 ==== Design considerations
 

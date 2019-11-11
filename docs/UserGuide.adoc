@@ -155,12 +155,12 @@ one step process.
 After you press enter you will be able to see the member reflected in the project like this:
 
 .`AddMemberCommand` success project overview display
-image::ProjectOverviewAddMember.png[]
+image::ProjectOverviewAddMember.png[picture, 400]
 
 And you will also be able to see her in your contacts like this:
 
 .New Member displayed in your contacts as a new person added.
-image::PersonListAddMember.png[]
+image::PersonListAddMember.png[picture, 400]
 
 If you look closely at Figure 5. you will see that some of the information does not really seem right. That is because
 you have not input it yet, but don't worry you can always do that later with our `edit` command which you will further down
@@ -191,7 +191,7 @@ Step 1. Find the person you want to add, and take note of the index which the pe
 below, let's say you want to add 'Bernice Yu' into your project. Notice her index is 2.
 
 .Finding the person to add
-image::AddFromContactsFindPerson.png[]
+image::AddFromContactsFindPerson.png[picture, 400]
 
 Step 2. Type in the `addFomContacts` command with the index `2`
 
@@ -200,7 +200,7 @@ image::AddFromContactsCommandInput.png[]
 
 Step 3. Press enter and you're done! Refer to the picture below to see what your screen should look like.
 
-image::AddFromContactsCommandSuccess.png[]
+image::AddFromContactsCommandSuccess.png[picutre, 400]
 
 // end::addFromContacts[]
 
@@ -216,6 +216,12 @@ Format:
 
 `setTimetable INDEX [n/NUSMODS_SHARE_URL] [f/FILEPATH_TO_TIMETABLE]`
 
+****
+* Assigns timetable to the person at the specified `INDEX`.
+* The index refers to the index number shown in the displayed person list using the command `list`.
+* The index *must be a positive integer* 1, 2, 3, ...
+****
+
 Example:
 
 * `setTimetable 3 f//home/john/Desktop/aliceTimetable.txt` +
@@ -230,26 +236,31 @@ TUESDAY 1100 TUESDAY 1500
 * `setTimetable 2 n/https://nusmods.com/timetable/sem-1/share?CS2100=LAB:05,TUT:02,LEC:1&CS2101=&CS2103T=LEC:G13&CS2105=TUT:03,LEC:1&CS3241=TUT:05,LEC:1&CS3243=TUT:01,LEC:1&GEQ1000=TUT:D27` +
 Set timetable to the person with index 2 on the list of persons, by retrieving timetable data from NUSMods.
 
-Below is a step-by-step instruction to guide you through the process of setting a timetable to Alice, through the use of NUSMods:
+Below is a step-by-step instruction to guide you through the process of setting a timetable to Alex, through the use of NUSMods:
 
-* Step 1: Type `setTimetable`, followed by the index of the person you wish to set the timetable to, and the URL of the share link.
+* Step 1: Type `list` and enter to view the list of persons. Identify the index of the person you wish to set the timetable to.
 
-.User enters timetable of team member
+.List of person in the application
 image::set-timetable/set-timetable-step-1.png[]
 
-* Step 2: Press enter, and you would see the following message. You can even scroll down to view a simple visualization of the timetable set!
+* Step 2: Type `setTimetable`, followed by the index of the person you wish to set the timetable to, and the URL of the share link.
+
+.User enters timetable of team member
+image::set-timetable/set-timetable-step-2.png[]
+
+* Step 3: Press enter, and you would see the following message. You can even scroll down to view a simple visualization of the timetable set!
 
 .`setTimetable` command success
-image::set-timetable/set-timetable-step-2a.png[]
+image::set-timetable/set-timetable-step-3a.png[]
 
 .Visualization of timetable set
-image::set-timetable/set-timetable-step-2b.png[]
+image::set-timetable/set-timetable-step-3b.png[]
 
 [TIP]
 Even if you accidentally entered a wrong URL, MyProject would prompt you helpfully!
 
 .Error message when entered URL is invalid
-image::set-timetable/set-timetable-step-3.png[]
+image::set-timetable/set-timetable-step-3-error.png[]
 
 // end::setTimetable[]
 
@@ -389,7 +400,7 @@ Step 1. Find the person you want to remove from the project. Let's say you want 
 she just dropped your module. Notice her index is at 1
 
 .Finding the person you want to remove
-image::RemoveMemberFindingPerson.png[]
+image::RemoveMemberFindingPerson.png[picture, 400]
 
 
 Step 2. Type in the `removeMember` command with the index of `1`
@@ -475,7 +486,9 @@ associated with this functionality.
 
 Need to decide on a meeting timing, but having trouble finding a time where all members are free? This command can help suggest meeting timings!
 
-* Prerequisite: Timetables have been assigned to the members with the command `setTimetable`
+* Prerequisite:
+** Members have been assigned to the project using `addFromContacts` or `addMember`
+** Timetables have been assigned to the members with the command `setTimetable`
 
 [NOTE]
 `generate` would not give an error if some members do not have timetable assigned to them. Ensure that you have done `setTimetable` for each of the members in the project before using `generate`.
@@ -794,24 +807,24 @@ Step 1. Find the task you want to assign and the members you want to assign the 
 indexes.
 
 .Finding the task to assign and the members to assign to
-image::AssignTaskFinding.png[]
+image::AssignTaskFinding.png[picutre,  400]
 
 Step 2. Type in the `assignTask` command along with the correct indexes.
 
 .Typing the `assignTask` command with the correct input
-image::AssignTaskCommandInput.png[]
+image::AssignTaskCommandInput.png[picutre, 400]
 
 Step 3. Press enter and you're done! You will now see the tasks reflected under the respective members in your contacts.
 
 You will see a success message:
 
 .`assignTask` command success message
-image::AssignTaskCommandMessageSuccess.png[]
+image::AssignTaskCommandMessageSuccess.png[picture, 400]
 
 And also see the task reflected under the members:
 
 .How the assigned task is shown
-image::PersonListAssignedTask.png[]
+image::PersonListAssignedTask.png[picture, 400]
 
 ==== Unassigning a task: `unassignTask`
 With the ability to assign task, naturally you should be able to unassign a task as well, and you can do that with this
@@ -836,19 +849,19 @@ Step 1. Identify the tasks you want to unassign and the person you want to unass
 of their indexes.
 
 .Finding the tasks to unassign, and the person to unassign the tasks from.
-image::UnassignTaskFinding.png[]
+image::UnassignTaskFinding.png[picutre, 400]
 
 Step 2. Type in the `unassignTask` command with the relevant inputs
 
 .`unassignTask` command input
-image::UnassignTaskCommandInput.png[]
+image::UnassignTaskCommandInput.png[picture, 400]
 
 Step 3. Press enter and you're done!
 
 You will see a success message:
 
 .`unassignTask` command success message
-image::UnassignTaskMessageSuccess.png[]
+image::UnassignTaskMessageSuccess.png[picture, 400]
 
 And you will no longer see the tasks reflected under the person.
 
@@ -873,12 +886,12 @@ To help you better understand how to use this command, here is a step-by-step gu
 Step 1. Identify the meeting you want to mark attendance for, and the members who were present.
 
 .Finding the meeting to mark attendance for and the members to mark attendance of
-image::MarkAttendanceFinding.png[]
+image::MarkAttendanceFinding.png[picture, 400]
 
 Step 2. Type in the `markAttendance` command with the relevant inputs.
 
 .`markAttendance` command input
-image::MarkAttendanceCommandInput.png[]
+image::MarkAttendanceCommandInput.png[picture,500]
 
 Step 3. Press enter and you're done!
 
@@ -890,7 +903,7 @@ image::MarkAttendanceMessageSuccess.png[]
 And the meeting will show up under the information of the person like this:
 
 .Showing attendance marked
-image::PersonListMarkAttendance.png[]
+image::PersonListMarkAttendance.png[picture, 400]
 
 ==== Viewing performance overview: `showPerformanceOverview`
 After assigning the tasks and marking the attendance of members, you can use this command to give you a comprehensive
@@ -924,6 +937,6 @@ image::MeetingRateTable.png[]
 
 * Lastly you can also view each member individually after scrolling through the tables:
 
-image::IndividualPerformances.png[]
+image::IndividualPerformances.png[performance, 300,400]
 
 // end::performanceTracking[]
