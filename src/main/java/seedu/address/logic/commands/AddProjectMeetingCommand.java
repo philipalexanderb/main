@@ -65,7 +65,7 @@ public class AddProjectMeetingCommand extends Command {
             for (Meeting meeting: newMeetingList) {
                 if (meeting.getTime().equals(toAdd.getTime())) {
                     throw new CommandException(MESSAGE_MEETING_CLASH);
-                } else if (meeting.getDescription().equals(toAdd.getDescription())){
+                } else if (meeting.getDescription().equals(toAdd.getDescription())) {
                     throw new CommandException(MESSAGE_MEETING_DESCRIPTION_EXISTS);
                 }
             }
