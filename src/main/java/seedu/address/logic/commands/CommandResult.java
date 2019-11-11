@@ -33,6 +33,8 @@ public class CommandResult {
         this.showHelp = showHelp;
         this.exit = exit;
         this.commandWord = commandWord;
+
+        // list of command that doesnt require a change in display
         List<String> list = Arrays.asList(LogOutCommand.COMMAND_WORD,
                 SendMailCommand.COMMAND_WORD,
                 BroadcastMailCommand.COMMAND_WORD,
@@ -40,7 +42,8 @@ public class CommandResult {
                 SignInCommand.COMMAND_WORD,
                 BackCommand.COMMAND_WORD,
                 HelpCommand.COMMAND_WORD,
-                ExitCommand.COMMAND_WORD
+                ExitCommand.COMMAND_WORD,
+                SetTimetableCommand.COMMAND_WORD
         );
         if (list.contains(commandWord)) {
             this.changeInUi = false;

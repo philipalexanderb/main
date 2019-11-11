@@ -522,6 +522,7 @@ Only the two following methods are exposed:
 
 This feature depends on the timetable stored internally as an attribute of each members:
 
+.Class diagram of the `TimeSlotGenerator`
 image::GenerateSlotClassDiagram.png[]
 
 Typical usage of `TimeSlotGenerator` would be look like this:
@@ -530,6 +531,7 @@ Typical usage of `TimeSlotGenerator` would be look like this:
 
 The following sequence diagram shows the entire process of generating timeslot after the command `generate d/2` is given:
 
+.Timeline of process from user entering the command to the results being displayed to the user.
 image::GenerateSlotSequenceDiagram.png[]
 
 As shown in the sequence diagram above, the command execution would go through the following stages:
@@ -585,9 +587,9 @@ There are two ways to input member's timetable:
 . Member send a formatted text file to the team leader, which would then be parsed by the system. The file would be a list of newline separated time ranges
 . Member send their NUSMods timetable URL to the team leader, and the system would parse the URL and fetch timetable data using NUSMods API
 
-User command would be in the format: `addTimetable INDEX m/member [n/NUSMODS_URL] [f/FILEPATH]`
+User command would be in the format: `setTimetable INDEX m/member [n/NUSMODS_URL] [f/FILEPATH]`
 
-The main logic is implemented within the `TimetableInput` class, which is invoked by the `AddTimetableCommand` class.
+The main logic is implemented within the `TimetableInput` class, which is invoked by the `SetTimetableCommand` class.
 
 ==== Details
 
@@ -596,19 +598,19 @@ Important functions in `TimetableInput`:
 * `TimetableInput#getTimetableFromNUSMods(Url url)` -- Parse URL and fetch timetable data using NUSMods API
 * `TimetableInput#getTimetableFromFile(String filepath)` -- Parse file to obtain timetable data
 
-Below is an overview of the classes related to timetable input:
+Below is an overview of the classes related to time+table input:
 
 .Class diagram for timetable input feature
-image::add-timetable/AddTimetableClassDiagram.png[]
+image::set-timetable/SetTimetableClassDiagram.png[]
 
-`addTimetableCommand` accepts either a filepath or a URL, which is then supplied to `TimetableInput` to fetch the timetable data.
+`setTimetableCommand` accepts either a filepath or a URL, which is then supplied to `TimetableInput` to fetch the timetable data.
 
-Afterwards, the timetable is passed into `TimetableVisualization` to provide a visual representation of the added timetable. This visualization is then passed back as a `CommandResult` to be displayed to the user.
+Afterwards, the timetable is passed into `TimetableVisualization` to provide a visual representation of the set timetable. This visualization is then passed back as a `CommandResult` to be displayed to the user.
 
-The following sequence diagram illustrates what happens when the user issues the command `addTimetable` to add their timetable from a shared NUSMods timetable.
+The following sequence diagram illustrates what happens when the user issues the command `setTimetable` to add their timetable from a shared NUSMods timetable.
 
 .Timeline of entire process from user executing their command to getting the result back.
-image::add-timetable/AddTimetableSequenceDiagram.png[]
+image::set-timetable/SetTimetableSequenceDiagram.png[]
 
 
 ==== Design Considerations
@@ -644,6 +646,32 @@ We are using `java.util.logging` package for logging. The `LogsCenter` class is 
 
 Certain properties of the application can be controlled (e.g user prefs file location, logging level) through the configuration file (default: `config.json`).
 
+=== Finance feature
+
+The finance feature allows the user to keep track of the budgets of
+the project and view them in a graph. The graphs are achieved
+using JavaFX built in bar and pie chart. The user is also able to store
+the information in an excel sheet as well. This is done using
+the Apache POI API. The documentation of this library can
+be seen at https://poi.apache.org/apidocs/[here].
+
+==== Details
+
+This logic of the feature is based on the the construction of different classes.
+
+.This class diagram depicts the interaction among classes under finance feature.
+image::FinanceClassDiagram.png[]
+
+The fact that `Budget` contains two money object is that it maintains
+two attribute `amount` and `remainingAmount` as these are usually
+the crucial information the user wants to see.
+
+==== Design considerations
+`Money` is represented as an object. As it is shared by the
+`Spending` class and the `Budget` class and they all require to
+check the validity of a given string to convert it to `BigDecimal`.
+
+
 [[Implementation-Checkout]]
 === Checkout
 This allows user to checkout to a project from a list of project to work on it.
@@ -665,13 +693,15 @@ image::CheckoutSequenceDiagram.png[]
 The first step of changing UI display is to find out
 whether a change in UI is needed given a command from user.
 This is done in the CommandResult class constructor. If a command
-word matches either of the four words `list, checkout, listBudget, addProject`,
-the flag of whether a change in UI is needed will be set to true.
+word matches actions that is email related or help or exit,
+the flag will indicate that a change in UI is not needed.
 
 Next, a class to represent a state of UI is needed to remember
-a history which is the `UiEvent` class.
-UiEvent is a class that represent a type of UiDisplay as an
-event. It stores the current state of the application's UI and the current working project if it exists.
+a history which is the `UiEvent` class.UiEvent is a class that represent
+a type of UiDisplay as an event. It stores the current state of the
+application's UI and the current working project if it exists.
+Whenever a command is executed, only if this command lead to a state
+that is different from the current one a new UiEvent will be generated and stored in history.
 The `viewHistory` is stored in the `MainWindow` class as a stack of UiEvents
 and it also maintains a currentStatePointer. When a `back` command
 is executed, it can check back on what is the previous state.
@@ -692,14 +722,16 @@ image::ChangeUiDisplayState0.png[]
 Step 2. The user executes `checkout 1` command to checkout to preoject 1 to work on.
 During the execution of the `checkout` command, at the commandresult generation step,
 it detects that there is a need to change the Ui and the flag is made to true.
-In the `MainWindow`, since a change is needed, `MainWindow#changeUi` is called
+In the `MainWindow`, since a change is needed, `MainWindow#changeUiDisplay` is called
 to change the display and set the `currentState` to be `PROJECT_OVERVIEW`.
 
 image::ChangeUiDisplayState1.png[]
 
 Step 3. The user now decide to add a budget by `addBudget b/ equipment 3000.00`.
-This command does not need a change in Ui display thus the flag is false.
-However, the method `MainWindow#changeUiDisplay` is still called but this time
+This command does need a change in Ui display but the state of this command
+is exactly the same as the previous command thus `MainWindow#changeUiDisplay`
+will be called with the same state.
+Thus, the method `MainWindow#changeUiDisplay` is still called but this time
 it is called to update the information in the current display and set the
 current state to be still the current state. Thus, the `currentStatePointer` does
 not move.
@@ -723,6 +755,8 @@ and call `MainWindow#changeUiDisplay` to display the previous Ui.
 image::ChangeUiDisplayState4.png[]
 image::ChangeUiDisplayState5.png[]
 
+.This diagram shows how the Ui reacts to an user's input
+image::ChangeUiDisplayActivityDiagram.png[]
 
 [NOTE]
 If the `currentStatePointer` is at `PROJECT_LIST`, then there are
@@ -813,6 +847,7 @@ and a method to retrieve the values.
 *** It is more difficult to iterate through all HashMaps to retrieve the values based on your preferred ordering.
 
 // end::performanceTracking[]
+
 
 == Documentation
 
